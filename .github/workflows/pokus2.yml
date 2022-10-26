@@ -7,7 +7,7 @@ on:
 jobs:
   collect_info:
     runs-on: 
-          - ubuntu
+          - ubuntu-latest
 
     outputs:
       MODULES_TO_BUILD: ${{ steps.modules.outputs.MODULES_TO_BUILD }}
@@ -30,7 +30,7 @@ jobs:
       VERSION: ${{ needs.collect_info.outputs.VERSION }}
       REPO: ${{ needs.collect_info.outputs.REPO }}
     runs-on: 
-          - ubuntu
+          - ubuntu-latest
 
     needs: collect_info
 
