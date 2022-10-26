@@ -2,7 +2,10 @@ name: verify
 
 on:
 
-  workflow_dispatch:
+  workflow_dispatch    env:
+      VERSION: ${{ needs.collect_info.outputs.VERSION }}
+      REPO: ${{ needs.collect_info.outputs.REPO }}
+
 
 jobs:
   collect_info:
