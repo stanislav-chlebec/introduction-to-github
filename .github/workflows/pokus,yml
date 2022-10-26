@@ -1,0 +1,47 @@
+name: verify
+
+on:
+
+  workflow_dispatch:
+
+jobs:
+  collect_info:
+    runs-on: 
+          - ubuntu
+
+    outputs:
+      MODULES_TO_BUILD: ${{ steps.modules.outputs.MODULES_TO_BUILD }}
+      VERSION: ${{ steps.version.outputs.VERSION }}
+    steps:
+      - name: Find modified modules
+        id: modules
+        run: |
+          MODULES_TO_BUILD=MOD1
+          echo "MODULES_TO_BUILD=$MODULES_TO_BUILD" | tee  -a  $GITHUB_OUTPUT
+
+      - name: Determine current version
+        id: version
+        run: |
+          VERSION=1.1.1.2
+          echo "VERSION=$VERSION" | tee  -a  $GITHUB_OUTPUT
+
+  build:
+    env:
+      VERSION: ${{ needs.collect_info.outputs.VERSION }}
+      REPO: ${{ needs.collect_info.outputs.REPO }}
+    runs-on: 
+          - ubuntu
+
+    needs: collect_info
+
+    steps:
+      - name: Build with Maven
+        run: echo "${{ env.MODULES_TO_BUILD }}"
+        env:
+          MODULES_TO_BUILD: ${{ needs.collect_info.outputs.MODULES_TO_BUILD }}
+      - name: Build with Maven 2 
+        run: echo "${{ env.VERSION }}"
+      - name: Build with Maven 2 
+        run: echo "${{ env.REPO }}"
+        env:
+          REPO: ${{ needs.collect_info.outputs.REPO }}
